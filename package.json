@@ -1,0 +1,46 @@
+{
+  "name": "evenflow",
+  "version": "0.0.0",
+  "description": "Dataflow runtime",
+  "main": "index.js",
+  "scripts": {
+    "test": "gulp test",
+    "start": "gulp start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/justinmchase/evenflow.git"
+  },
+  "keywords": [
+    "dataflow",
+    "event"
+  ],
+  "author": "Justin Chase <justin.m.chase@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/justinmchase/evenflow/issues"
+  },
+  "homepage": "https://github.com/justinmchase/evenflow#readme",
+  "standard": {
+    "env": {
+      "node": true,
+      "browser": true,
+      "mocha": true,
+      "es6": true
+    }
+  },
+  "dependencies": {
+    "async": "^2.1.4",
+    "babel-preset-latest": "^6.22.0",
+    "babel-register": "^6.22.0",
+    "enjoi": "^2.2.0",
+    "joi": "^10.2.0"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "gulp": "github:gulpjs/gulp#4.0",
+    "gulp-mocha": "^3.0.1",
+    "require-dir": "^0.3.1",
+    "standard": "^8.6.0"
+  }
+}
