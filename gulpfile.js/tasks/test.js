@@ -5,7 +5,7 @@ function test () {
   return gulp
     .src('./test/**/*.js', { read: false })
     .pipe(mocha({
-      reporter: 'nyan',
+      reporter: 'min',
       require: ['babel-register']
     }))
 }

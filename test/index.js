@@ -1,5 +1,6 @@
-import Flow from '../lib/flow'
+import evenflow from '../lib'
 import passthru from './components/passthru'
+import sinon from 'sinon'
 import chai from 'chai'
 chai.should()
 
@@ -11,8 +12,8 @@ describe('integration tests', () => {
     nodes: {
       'one': {
         component: 'passthru',
-        inputs: {
-          in: 'test-data'
+        values: {
+          value: 'test-data'
         }
       },
       'two': {
@@ -21,23 +22,51 @@ describe('integration tests', () => {
     },
     connections: [
       {
-        source: { node: 'one', field: 'out' },
-        target: { node: 'two', field: 'in' }
+        source: { node: 'one', field: 'value' },
+        target: { node: 'two', field: 'value' }
       }
     ]
   }
+  let sandbox = sinon.sandbox.create()
+  let messages = sinon.stub()
+  let errors = sinon.stub()
   let flow = null
   beforeEach((done) => {
-    flow = new Flow(components, document)
-    flow.run(done)
+    evenflow(components, document, (err, f) => {
+      flow = f
+      flow.on('message', messages)
+      flow.on('error', errors)
+      done(err)
+    })
   })
+  afterEach(() => sandbox.restore())
 
-  it('should load a correct nodes', () => {
+  it('should load the correct nodes', () => {
     flow.nodes['one'].should.be.ok
     flow.nodes['two'].should.be.ok
   })
-  it('should start a component', () => {
+  it('should start all components', () => {
     flow.nodes['one'].instance.started.should.be.true
     flow.nodes['two'].instance.started.should.be.true
+  })
+  it('should set values onto one', () => {
+    flow.nodes['one'].values.should.deep.equal({ value: 'test-data' })
+  })
+  it('should have a pending message', () => {
+    flow.dispatcher.messages.should.deep.equal([
+      {
+        target: flow.nodes['two'],
+        inputs: { value: 'test-data' }
+      }
+    ])
+  })
+  describe('after taking a step', () => {
+    beforeEach(() => flow.dispatcher.step())
+    it('should have no pending messages', () => {
+      flow.dispatcher.messages.should.be.empty
+    })
+    it('should send the message to two', () => {
+      flow.nodes['two'].values.should.deep.equal({ value: 'test-data' })
+    })
   })
 })

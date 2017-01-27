@@ -41,6 +41,7 @@
     "gulp": "github:gulpjs/gulp#4.0",
     "gulp-mocha": "^3.0.1",
     "require-dir": "^0.3.1",
+    "sinon": "^1.17.7",
     "standard": "^8.6.0"
   }
 }

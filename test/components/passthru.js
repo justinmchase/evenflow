@@ -1,13 +1,14 @@
+import Joi from 'joi'
 
 export default class Passthru {
   static get metadata () {
     return {
       name: 'passthru',
       inputs: {
-        value: { type: 'any', required: true }
+        value: Joi.any().required()
       },
       outputs: {
-        value: { type: 'any' }
+        value: Joi.any().required()
       }
     }
   }
