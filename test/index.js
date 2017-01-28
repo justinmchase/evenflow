@@ -52,19 +52,8 @@ describe('integration tests', () => {
   it('should set values onto one', () => {
     flow.nodes['one'].values.should.deep.equal({ value: 'test-data' })
   })
-  it('should have a pending message', () => {
-    flow.dispatcher.messages.should.deep.equal([
-      {
-        target: flow.nodes['two'],
-        inputs: { value: 'test-data' }
-      }
-    ])
-  })
   describe('after taking a step', () => {
-    beforeEach(() => flow.dispatcher.step())
-    it('should have no pending messages', () => {
-      flow.dispatcher.messages.should.be.empty
-    })
+    beforeEach(() => flow.step())
     it('should send the message to two', () => {
       flow.nodes['two'].values.should.deep.equal({ value: 'test-data' })
     })
