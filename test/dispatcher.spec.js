@@ -6,7 +6,6 @@ import chai from 'chai'
 chai.should()
 
 describe('dispatcher:', () => {
-  let sandbox = sinon.sandbox.create()
   let dispatcher = null
   let connections = null
   let one = null
@@ -21,7 +20,6 @@ describe('dispatcher:', () => {
     sink = new EventEmitter()
     dispatcher = new Dispatcher(connections, sink)
   })
-  afterEach(() => sandbox.restore())
 
   describe('events:', () => {
     let handler = null

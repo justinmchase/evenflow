@@ -1,7 +1,6 @@
 import gulp from 'gulp'
 import mocha from 'gulp-mocha'
 
-
 function test () {
   let ended = false
   let testStream = gulp
