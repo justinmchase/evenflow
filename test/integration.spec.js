@@ -1,61 +1,44 @@
+import fs from 'fs'
+import path from 'path'
 import evenflow from '../lib'
-import passthru from './components/passthru'
-import sinon from 'sinon'
+import components from './components'
 import chai from 'chai'
 chai.should()
 
-describe('integration tests', () => {
-  let components = [
-    passthru
-  ]
-  let document = {
-    nodes: {
-      'one': {
-        component: 'passthru',
-        values: {
-          value: 'test-data'
-        }
-      },
-      'two': {
-        component: 'passthru'
+function getFiles (dir) {
+  let items = []
+  fs.readdirSync(dir)
+    .map(item => path.join(dir, item))
+    .map(item => {
+      let stat = fs.statSync(item)
+      if (stat.isFile() && path.extname(item) === '.json') {
+        items.push({
+          name: path.basename(item),
+          content: JSON.parse(fs.readFileSync(item, 'utf8'))
+        })
+      } else if (stat.isDirectory()) {
+        getFiles(item).forEach(i => items.push(i))
       }
-    },
-    connections: [
-      {
-        source: { node: 'one', field: 'value' },
-        target: { node: 'two', field: 'value' }
-      }
-    ]
-  }
-  let sandbox = sinon.sandbox.create()
-  let messages = sinon.stub()
-  let errors = sinon.stub()
-  let flow = null
-  beforeEach((done) => {
-    evenflow(components, document, (err, f) => {
-      flow = f
-      flow.on('message', messages)
-      flow.on('error', errors)
-      done(err)
     })
-  })
-  afterEach(() => sandbox.restore())
 
-  it('should load the correct nodes', () => {
-    flow.nodes['one'].should.be.ok
-    flow.nodes['two'].should.be.ok
-  })
-  it('should start all components', () => {
-    flow.nodes['one'].instance.started.should.be.true
-    flow.nodes['two'].instance.started.should.be.true
-  })
-  it('should set values onto one', () => {
-    flow.nodes['one'].values.should.deep.equal({ value: 'test-data' })
-  })
-  describe('after taking a step', () => {
-    beforeEach(() => flow.step())
-    it('should send the message to two', () => {
-      flow.nodes['two'].values.should.deep.equal({ value: 'test-data' })
+  return items
+}
+
+describe('integration tests', () => {
+  getFiles(path.join(__dirname, 'integration')).forEach(file => {
+    let name = file.name
+    let flow = file.content.flow
+    let expectation = file.content.expectation
+    it(name, (done) => {
+      evenflow(components, flow, (err, flow) => {
+        if (err) return done(err)
+        flow.on('idle', () => {
+          flow.serialize().should.deep.equal(expectation)
+          flow.stop()
+          done()
+        })
+        flow.run()
+      })
     })
   })
 })

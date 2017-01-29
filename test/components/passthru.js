@@ -5,21 +5,12 @@ export default class Passthru {
     return {
       name: 'passthru',
       inputs: {
-        value: Joi.any().required()
+        value: Joi.any().required().invalid(null)
       },
       outputs: {
         value: Joi.any().required()
       }
     }
-  }
-
-  constructor () {
-    this.started = false
-  }
-
-  start (callback) {
-    this.started = true
-    callback()
   }
 
   process (inputs) {
