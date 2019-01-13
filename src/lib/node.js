@@ -2,12 +2,11 @@ import { EventEmitter } from 'events'
 import Joi from 'joi'
 import { merge } from './utils'
 
-let _dispatcher = Symbol()
-let _inputs = Symbol()
-let _outputs = Symbol()
+let _dispatcher = Symbol('a reference to the dispatcher')
+let _inputs = Symbol('a reference to this nodes inputs')
+let _outputs = Symbol('a reference to this nodes outputs')
 
 export default class Node extends EventEmitter {
-
   constructor (name, Component, values) {
     super()
     this.name = name

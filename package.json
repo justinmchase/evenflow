@@ -4,6 +4,7 @@
   "description": "Dataflow runtime",
   "main": "index.js",
   "scripts": {
+    "build": "gulp build",
     "test": "gulp test",
     "start": "gulp start"
   },
@@ -30,19 +31,24 @@
     }
   },
   "dependencies": {
-    "async": "^2.1.4",
-    "babel-preset-latest": "^6.22.0",
-    "babel-register": "^6.22.0",
-    "enjoi": "^2.2.0",
-    "joi": "^10.2.0"
+    "@babel/polyfill": "7.2.5",
+    "async": "2.1.4",
+    "joi": "14.3.1",
+    "source-map-support": "0.5.10"
   },
   "devDependencies": {
-    "chai": "^3.5.0",
-    "gulp": "github:gulpjs/gulp#4.0",
-    "gulp-mocha": "^3.0.1",
-    "gulp-standard": "^8.0.3",
-    "require-dir": "^0.3.1",
-    "sinon": "^1.17.7",
-    "standard": "^8.6.0"
+    "@babel/core": "7.2.2",
+    "@babel/preset-env": "^7.2.3",
+    "@babel/register": "7.0.0",
+    "chai": "4.2.0",
+    "dirty-chai": "^2.0.1",
+    "gulp": "4.0.0",
+    "gulp-babel": "^8.0.0",
+    "gulp-mocha": "6.0.0",
+    "gulp-standard": "12.0.0",
+    "inflection": "^1.12.0",
+    "require-dir": "1.2.0",
+    "sinon": "7.2.2",
+    "standard": "12.0.1"
   }
 }

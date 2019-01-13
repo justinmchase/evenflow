@@ -1,15 +1,14 @@
-let idle = Symbol()
-let running = Symbol()
-let timer = Symbol()
-let sink = Symbol()
-let emit = Symbol()
+const idle = Symbol('whether or not the dispatcher is idle')
+const running = Symbol('whether or not the dispatcher is running')
+const timer = Symbol('a reference to the timer')
+const sink = Symbol('a reference to the event sink')
+const emit = Symbol('a reference to the emitter')
 
 export default class Dispatcher {
-
   // States
   // - idle
   // - running
-
+  //
   // Events
   // - running
   // - awake
@@ -18,7 +17,6 @@ export default class Dispatcher {
   // - sending
   // - processing
   // - error
-
   constructor (connections, eventSink) {
     this.messages = []
     this.connections = connections

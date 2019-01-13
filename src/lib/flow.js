@@ -4,8 +4,8 @@ import Dispatcher from './dispatcher'
 import Node from './node'
 import Connection from './connection'
 
-let started = Symbol()
-let dispatcher = Symbol()
+let started = Symbol('whether or not this flow has been started')
+let dispatcher = Symbol('a reference to the dispatcher')
 
 export default class Flow extends EventEmitter {
   constructor (components, flow) {
@@ -58,4 +58,3 @@ export default class Flow extends EventEmitter {
     this[dispatcher].step()
   }
 }
-
